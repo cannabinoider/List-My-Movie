@@ -5,10 +5,7 @@ module.exports.getHome = (req, res) => {
 };
 
 module.exports.signup = async (req, res) => {
-    // const { userName, email, password } = req.body;
-    const userName ="shubham";
-    const email ="shubham@gmail.com";
-    const password ="shubhamy";
+    const { userName, email, password } = req.body;
     try {
         const value = await addUser(userName, email, password);
         if (value === "error") {

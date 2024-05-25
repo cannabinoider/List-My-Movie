@@ -2,6 +2,9 @@ const mongoose = require("mongoose");
 const Login = require('./schemas/login');
 
 module.exports.addUser = async (userName, email, password) => {
+    console.log(userName);
+    console.log(email);
+    console.log(password);
     try {
         const existingUser = await Login.findOne({ userName: userName });
         if (existingUser) {
