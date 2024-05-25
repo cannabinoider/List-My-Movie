@@ -1,20 +1,28 @@
-const mongoose = require("mongoose");
-const Login = require('./schemas/login');
+const { getUserName, addUserName } = require('./modal1')
 
 module.exports.addUser = async (userName, email, password) => {
-    console.log(userName);
-    console.log(email);
-    console.log(password);
     try {
-        const existingUser = await Login.findOne({ userName: userName });
-        if (existingUser) {
-            return "error";
+        const existingUser = await getUserName(userName);
+        if (existingUser === "go ahead") {
+            try {
+                const returnedData = await addUserName(userName, email, password);
+                if (returnedData === "Details Entered") {
+                    return ("Details Entered Successfully");
+                }
+                else {
+                    return ("db error");
+                }
+            }
+            catch (err) {
+                console.error(err);
+                return ("db data entering error");
+            }
         }
-        const userLogin = new Login({ userName, email, password });
-        await userLogin.save();
-        return "details added";
+        else{
+            return("Username already taken");
+        }
     } catch (err) {
         console.error(err);
-        return "error";
+        return "error accessing db";
     }
 };
