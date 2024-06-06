@@ -1,4 +1,4 @@
-const Login = require('./schemas/login');
+const Login = require('../schemas/login');
 
 module.exports.getUserName=async (userName)=>{
     const Dbdata=await Login.findOne({userName:userName});

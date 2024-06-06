@@ -1,4 +1,4 @@
-const { addUser, checkUserName } = require('./service');
+const { addUser, checkUserName } = require('../services/serviceMovie');
 const bcrypt = require('bcrypt');
 
 module.exports.getHome = (req, res) => {

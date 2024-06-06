@@ -1,5 +1,5 @@
 const express = require('express')
-const ourRouters = require('./router')
+const ourRouters = require('./routes/Movierouter')
 const bodyParser = require('body-parser');
 const mongodb = require("mongoose")
 

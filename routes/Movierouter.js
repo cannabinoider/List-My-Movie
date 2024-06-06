@@ -1,6 +1,6 @@
 const express=require('express')
 const route=express.Router()
-const control=require("./controller")
+const control=require("../controllers/MovieController")
 
 route.get("/",control.getHome)
 route.post("/signup",control.signup)

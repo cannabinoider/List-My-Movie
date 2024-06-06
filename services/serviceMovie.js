@@ -1,4 +1,4 @@
-const { getUserName, addUserName,getEmail } = require('./modal1')
+const { getUserName, addUserName,getEmail } = require('../models/modelController')
 const bcrypt = require('bcrypt');
 
 module.exports.addUser = async (userName, email, password) => {
