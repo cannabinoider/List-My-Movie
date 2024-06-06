@@ -1,5 +1,9 @@
 const { getUserName, addUserName,getEmail } = require('../models/modelController')
+const jwt =require("jsonwebtoken")
+const dotenv=require('dotenv');
 const bcrypt = require('bcrypt');
+
+dotenv.config()
 
 module.exports.addUser = async (userName, email, password) => {
     try {
@@ -7,6 +11,7 @@ module.exports.addUser = async (userName, email, password) => {
         if (existingUser === "go ahead") {
             try {
                 const returnedData = await addUserName(userName, email, password);
+                console.log(returnedData);
                 if (returnedData === "Details Entered") {
                     return ("Details Entered Successfully");
                 }
@@ -42,7 +47,15 @@ module.exports.checkUserName=async(userName,password)=>{
                 else{
                     const isPasswordCorrect = await bcrypt.compare(password, existingEmail.password);
                     if(isPasswordCorrect){
-                        return("Login Successfull");
+                        const token=jwt.sign(
+                            {
+                                userName:userName,
+                                password:password
+                            },
+                            process.env.SECRET_KEY,
+                            {expiresIn:"2h"}
+                        );
+                        return(token);
                     }
                     else{
                         return("Incorrect Password");
@@ -57,7 +70,14 @@ module.exports.checkUserName=async(userName,password)=>{
         else{
             const isPasswordCorrect = await bcrypt.compare(password, existingUser.password);
             if(isPasswordCorrect){
-                return("Login Successfull");
+                const token=jwt.sign(
+                    {
+                        userName:userName,
+                        password:password
+                    },
+                    process.env.SECRET_KEY,
+                );
+                return(token);
             }
             else{
                 return("Incorrect Password");

@@ -7,39 +7,44 @@ module.exports.getHome = (req, res) => {
 
 module.exports.signup = async (req, res) => {
     const { userName, email, password } = req.body;
+    console.log(userName,email,password)
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
         const value = await addUser(userName, email, hashedPassword);
+        console.log(value);
         if (value === "Details Entered Successfully") {
-            res.send("User details added successfully");
+            res.status(200).send({message:"User details added successfully"});
         }
         else if (value === "Username already taken") {
-            res.send("This username is already taken and is unavailable");
+            res.status(500).send({message:"This username is already taken and is unavailable"});
         }
         else {
-            res.status(404).send("Error adding details");
+            res.status(500).send({message:"Error adding details"});
         }
     } catch (err) {
-        res.status(500).send("Internal Server Error");
+        res.status(400).send({message:"Something went wrong!"});
     }
 };
 
 
 module.exports.login = async (req, res) => {
-    const { userName, password } = req.body;
+    const userName = req.headers.username;
+    const password  = req.headers.password;
+    console.log(userName,password);
     try {
         const value = await checkUserName(userName, password);
         if (value === "Incorrect Password") {
-            res.send("Entered password is incorrect");
+            res.status(500).send({message:"Entered password is incorrect"});
         }
-        else if (value === "Login Successfull") {
-            res.send("Login Successfull");
+        else if (value === "error accessing db") {
+            res.status(404).send("Some error occured");
+           
         }
         else if (value === "UserName not found") {
-            res.send("UserName is not present");
+            res.status(500).send({message:"UserName is not present"});
         }
         else {
-            res.status(404).send("Some error occured");
+            res.status(200).send({token:value});
         }
     }
     catch (err) {

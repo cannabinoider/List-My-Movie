@@ -12,9 +12,9 @@ module.exports.getUserName=async (userName)=>{
 
 module.exports.addUserName=async(userName,email,password)=>{
     try{
-    const userLogin = new Login({ userName, email, password });
-    await userLogin.save();
-    return ("Details Entered")
+        const userLogin = new Login({ userName, email, password });
+        await userLogin.save();
+        return ("Details Entered")
     }
     catch{
         return("error entering data");
