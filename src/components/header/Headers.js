@@ -36,7 +36,7 @@ export const Headers = () => {
         <Link to="/movies/watchlist" style={{textDecoration: "none"}}><span>Watchlist</span></Link>
       </div>
       <div className="headerRight">
-        <IconButton onClick={handleMenuOpen}>
+        <IconButton onClick={handleMenuOpen} style={{color:"white"}}>
           <AccountCircle fontSize="large" />
         </IconButton>
         <Menu

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { TextField, Button, Typography } from "@mui/material";
+import {signUp} from "../../actions/api"
+
 import './Signup.css';
 
 function Signup() {
@@ -13,24 +14,21 @@ function Signup() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-
-    try {
-      const response = await axios.post("http://localhost:8000/signup", {
-        username,
-        email,
-        password,
-      });
-
-      if (response.data === "exist") {
-        setError("User already exists. Please login.");
-      } else if (response.data === "notexist") {
-        navigate("/", { state: { username } });
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      setError("An error occurred. Please try again.");
+    try{
+      console.log(username,email,password);
+      const signUpResult=await signUp(username,email,password);
+      setError(signUpResult);
+      const timer=setTimeout(()=>{
+        navigate("/login");
+      },1000);
+      
     }
-  }
+    catch{
+      setError("Something went wrong please retry");
+    }
+
+
+    }
 
   return (
     <div className="signup-container">
