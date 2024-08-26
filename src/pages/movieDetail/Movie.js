@@ -1,12 +1,21 @@
 import React, { useEffect, useState } from "react";
 import "./Movie.css";
 import { useParams } from "react-router-dom";
+import { getAuthUser } from "../../actions/cookie";
+import { addToWatchlist } from "../../actions/api";
 
 const Movie = () => {
     const [currentMovieDetail, setMovie] = useState();
+    const [useName,setUserName]=useState("");
     const { id } = useParams();
-    const handleWatchlist ()=>{
-
+    const handleWatchlist=async ()=>{
+        try{
+            const result=await addToWatchlist(useName,id);
+            console.log(result.message);
+        }
+        catch(error){
+            console.log(error)
+        }
     }
     
 
@@ -16,13 +25,16 @@ const Movie = () => {
                 const response = await fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=4e44d9029b1270a757cddc766a1bcb63&language=en-US`);
                 const data = await response.json();
                 setMovie(data);
+                const token=await getAuthUser();
+                setUserName(token.userName);
             } catch (error) {
                 console.error("Error fetching movie data:", error);
             }
         };
-
         getData();
         window.scrollTo(0, 0);
+
+        
 
     }, [id]);
 

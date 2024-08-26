@@ -5,7 +5,8 @@ const cookie = new Cookies;
 
 export async function getAuthUser() {
     const auth = cookie.get('user')
-    return auth
+    const payload=await validate(auth);
+    return payload;
 }
 
 // export async function setAuthUser(token) {
