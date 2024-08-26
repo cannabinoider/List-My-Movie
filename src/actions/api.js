@@ -49,5 +49,28 @@ export const userLogin = async (username, password) => {
         return "Something gone wrong";
     }
 };
-
+export const addToWatchlist = async (username, movieId) => {
+    console.log("adding to watchlist");
+    try {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_LOCATION}/addToWatchlist`, {
+            method: "POST",
+            mode: "cors",
+            headers: {
+                "Content-Type": "application/json",
+                username: username,
+                movieid: movieId
+            },
+            cache: "no-cache"
+        });
+        const newResponse=await response.json();
+        if (!response.ok) {
+            return newResponse;
+        } else {
+            return newResponse;
+        }
+    } catch (error) {
+        console.error("Error during login:", error);
+        return "Something gone wrong";
+    }
+};
 

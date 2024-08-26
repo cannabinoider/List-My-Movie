@@ -5,6 +5,10 @@ import { useParams } from "react-router-dom";
 const Movie = () => {
     const [currentMovieDetail, setMovie] = useState();
     const { id } = useParams();
+    const handleWatchlist ()=>{
+
+    }
+    
 
     useEffect(() => {
         const getData = async () => {
@@ -63,9 +67,9 @@ const Movie = () => {
                     </a>
                 )}
                 {currentMovieDetail && currentMovieDetail.homepage && (
-                    <a href={currentMovieDetail.homepage} target="_blank" rel="noreferrer" style={{ textDecoration: "none" }}>
+                    <button onClick={handleWatchlist}>
                         <p><span className="movie__homeButton movie__Button">Add to watchlist <i className="newTab fas fa-external-link-alt"></i></span></p>
-                    </a>
+                    </button>
                 )}
                 {currentMovieDetail && currentMovieDetail.imdb_id && (
                     <a href={`https://www.imdb.com/title/${currentMovieDetail.imdb_id}`} target="_blank" rel="noreferrer" style={{ textDecoration: "none" }}>
