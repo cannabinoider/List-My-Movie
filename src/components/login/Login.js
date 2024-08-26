@@ -15,7 +15,6 @@ function Login() {
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      console.log(username, password);
       const loginResult = await userLogin(username, password);
       if (loginResult.token) {
         console.log("hello");
@@ -26,7 +25,7 @@ function Login() {
       } else {
         setError(loginResult);
       }
-      if (loginResult === "Login Successful") {
+      if (loginResult.token) {
         setTimeout(() => {
           navigate("/");
         }, 1000);

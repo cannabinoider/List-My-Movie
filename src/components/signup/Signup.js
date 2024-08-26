@@ -18,10 +18,11 @@ function Signup() {
       console.log(username,email,password);
       const signUpResult=await signUp(username,email,password);
       setError(signUpResult);
-      const timer=setTimeout(()=>{
-        navigate("/login");
-      },1000);
-      
+      if(signUpResult==="User details added successfully"){
+        const timer=setTimeout(()=>{
+          navigate("/login");
+        },1000);
+        }
     }
     catch{
       setError("Something went wrong please retry");
