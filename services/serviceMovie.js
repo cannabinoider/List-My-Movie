@@ -1,4 +1,4 @@
-const { getUserName, addUserName,getEmail } = require('../models/modelController')
+const { getUserName, addUserName,getEmail,getWatchlist,addMovieIdToWatchList} = require('../models/modelController')
 const jwt =require("jsonwebtoken")
 const dotenv=require('dotenv');
 const bcrypt = require('bcrypt');
@@ -89,3 +89,18 @@ module.exports.checkUserName=async(userName,password)=>{
         return("error accessing db");
     }
 }
+module.exports.addMovieToWatchlist = async (userName, movieId) => {
+    try {
+        const existingMovies = await getWatchlist(userName);
+        if(existingMovies.movies.includes(movieId)){
+            return("Movie is already present in Watchlist")
+        }
+        else{
+            const addMovie=await addMovieIdToWatchList(userName,movieId,existingMovies.movies);
+            return addMovie;
+        }
+    } catch (err) {
+        console.error(err);
+        return("error accessing db");
+    }
+};

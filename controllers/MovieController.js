@@ -1,4 +1,4 @@
-const { addUser, checkUserName } = require('../services/serviceMovie');
+const { addUser, checkUserName,addMovieToWatchlist } = require('../services/serviceMovie');
 const bcrypt = require('bcrypt');
 
 module.exports.getHome = (req, res) => {
@@ -45,6 +45,28 @@ module.exports.login = async (req, res) => {
         }
         else {
             res.status(200).send({token:value});
+        }
+    }
+    catch (err) {
+        res.status(500).send("Internal Server Error");
+    }
+};
+
+module.exports.addToWatchlist = async (req, res) => {
+    const userName = req.headers.username;
+    const movieId = req.headers.movieid;
+    console.log(userName,movieId);
+    try {
+        const value = await addMovieToWatchlist(userName, movieId);
+        if (value === "Movie is already present in Watchlist") {
+            res.status(200).send({message:value});
+        }
+        else if (value === "db error") {
+            res.status(500).send("Some error occured");
+           
+        }
+        else {
+            res.status(200).send({message:value});
         }
     }
     catch (err) {
