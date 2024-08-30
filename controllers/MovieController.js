@@ -1,4 +1,4 @@
-const { addUser, checkUserName,addMovieToWatchlist } = require('../services/serviceMovie');
+const { addUser, checkUserName,addMovieToWatchlist, getMoviesFromWatchlist, deleteMovieFromWatchlist } = require('../services/serviceMovie');
 const bcrypt = require('bcrypt');
 
 module.exports.getHome = (req, res) => {
@@ -71,5 +71,38 @@ module.exports.addToWatchlist = async (req, res) => {
     }
     catch (err) {
         res.status(500).send("Internal Server Error");
+    }
+};
+module.exports.getMovies = async (req, res) => {
+    const userName = req.headers.username;
+    console.log(userName,movieId);
+    try {
+        const movies = await getMoviesFromWatchlist(userName);
+        if (movies) {
+            res.status(200).send({movies});
+        }
+        else {
+            res.status(404).json({ message: "No movies found for this user" });
+        }
+    }
+    catch (err) {
+        res.status(500).send("Internal Server Error");
+    }
+};
+module.exports.deleteMovies = async (req, res) => {
+    const userName = req.headers.username;
+    const movieId = req.body.movieid;
+    console.log(userName,movieId);
+    try {
+        const value = await deleteMovieFromWatchlist(userName, movieId);
+        if (result === "Movies removed successfully") {
+            res.status(200).send({ message: result });
+        } else if (result === "Movies not found in watchlist") {
+            res.status(404).send({ message: result });
+        } else {
+            res.status(500).send({ message: "Some error occurred" });
+        }
+    } catch (err) {
+        res.status(500).send({ message: "Internal Server Error" });
     }
 };

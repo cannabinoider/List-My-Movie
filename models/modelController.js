@@ -49,7 +49,7 @@ module.exports.getWatchlist=async (userName)=>{
     }
 }
 module.exports.addMovieIdToWatchList=async (userName,movieId,movies)=>{
-    const movieWatchlist=await Profile.updateOne({userName:userName},{ $set: { movies: [...movies, { id: movieId }] } });
+    const movieWatchlist = await Profile.updateOne({userName:userName},{ $set: { movies: [...movies, { id: movieId }] } });
     if(movieWatchlist.modifiedCount===1){
         return "updated Successfully";
     }
@@ -57,3 +57,15 @@ module.exports.addMovieIdToWatchList=async (userName,movieId,movies)=>{
         return("db error");
     }
 }
+module.exports.updateWatchlistMovies = async (userName, updatedMovies) => {
+    try {
+        const result = await Profile.updateOne(
+            { userName },
+            { $set: { movies: updatedMovies } }
+        );
+        return result;  
+    } catch (err) {
+        console.error(err);
+        throw new Error('Database update error');
+    }
+};

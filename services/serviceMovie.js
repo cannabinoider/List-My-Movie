@@ -33,7 +33,6 @@ module.exports.addUser = async (userName, email, password) => {
     }
 };
 
-
 module.exports.checkUserName=async(userName,password)=>{
     try{
         const existingUser = await getUserName(userName);
@@ -102,5 +101,43 @@ module.exports.addMovieToWatchlist = async (userName, movieId) => {
     } catch (err) {
         console.error(err);
         return("error accessing db");
+    }
+};
+module.exports.getMoviesFromWatchlist = async (userName) => {
+    try{
+        const userList = await getWatchlist(userName);
+        if(userList && userList.length>0){
+            const movieIds = userList.movies.map(movie => movie.id);
+            return movieIds;
+        }else{
+            return null;
+        }
+    }
+    catch(err){
+        console.error(err);
+        return("error accessing db")
+    }
+};
+module.exports.deleteMovieFromWatchlist = async (userName, movieId) => {
+    try {
+        const existingMovies = await getWatchlist(userName);
+        if (!existingMovies || existingMovies.movies.length === 0) {
+            return "Movies not found in watchlist";
+        }
+        const updatedMovies = existingMovies.movies.filter(movie => !movieId.includes(movie.Id));
+
+        if (updatedMovies.length === existingMovies.movies.length) {
+            return "Movies not found in watchlist";
+        }
+        const result = await updateWatchlistMovies(userName, updatedMovies);
+        
+        if (result.modifiedCount === 1) {
+            return "Movies removed successfully";
+        } else {
+            return "db error";
+        }
+    } catch (err) {
+        console.error(err);
+        throw new Error("Error accessing database");
     }
 };

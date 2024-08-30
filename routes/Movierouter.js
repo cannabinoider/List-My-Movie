@@ -6,6 +6,8 @@ route.get("/",control.getHome)
 route.post("/signup",control.signup)
 route.get("/login",control.login)
 route.post("/addToWatchlist",control.addToWatchlist)
+route.get("/getMoviesFromWatchlist",control.getMovies)
+route.get("/deleteMovieFromWatchlist",control.deleteMovies)
 
 
 module.exports = route;
