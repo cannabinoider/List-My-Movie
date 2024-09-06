@@ -1,4 +1,4 @@
-const { getUserName, addUserName,getEmail,getWatchlist,addMovieIdToWatchList} = require('../models/modelController')
+const { getUserName, addUserName,getEmail,getWatchlist,addMovieIdToWatchList,updateWatchlistMovies} = require('../models/modelController')
 const jwt =require("jsonwebtoken")
 const dotenv=require('dotenv');
 const bcrypt = require('bcrypt');
@@ -120,17 +120,21 @@ module.exports.getMoviesFromWatchlist = async (userName) => {
 
 module.exports.deleteMovieFromWatchlist = async (userName, movieId) => {
     try {
-        const existingMovies = await getWatchlist(userName);
-        if (!existingMovies || existingMovies.movies.length === 0) {
+        const existingMoviesList = await getWatchlist(userName);
+        if (!existingMoviesList || existingMoviesList.length === 0 || !existingMoviesList[0].movies || existingMoviesList[0].movies.length === 0) {
             return "Movies not found in watchlist";
         }
-        const updatedMovies = existingMovies.movies.filter(movie => !movieId.includes(movie.Id));
+
+        const existingMovies = existingMoviesList[0]; 
+        const movieIdAsNumber = parseInt(movieId, 10);
+
+        const updatedMovies = existingMovies.movies.filter(movie => movie.id !== movieIdAsNumber);
 
         if (updatedMovies.length === existingMovies.movies.length) {
             return "Movies not found in watchlist";
         }
         const result = await updateWatchlistMovies(userName, updatedMovies);
-        
+
         if (result.modifiedCount === 1) {
             return "Movies removed successfully";
         } else {
@@ -141,3 +145,5 @@ module.exports.deleteMovieFromWatchlist = async (userName, movieId) => {
         throw new Error("Error accessing database");
     }
 };
+
+

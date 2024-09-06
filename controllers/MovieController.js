@@ -91,10 +91,10 @@ module.exports.getMovies = async (req, res) => {
 };
 module.exports.deleteMovies = async (req, res) => {
     const userName = req.headers.username;
-    const movieId = req.body.movieid;
+    const movieId = req.headers.movieid;
     console.log(userName,movieId);
     try {
-        const value = await deleteMovieFromWatchlist(userName, movieId);
+        const result = await deleteMovieFromWatchlist(userName, movieId);
         if (result === "Movies removed successfully") {
             res.status(200).send({ message: result });
         } else if (result === "Movies not found in watchlist") {
