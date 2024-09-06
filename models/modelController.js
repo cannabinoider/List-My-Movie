@@ -23,7 +23,7 @@ module.exports.addUserName = async (userName, email, password) => {
         await userLogin.save();
         return "Details Entered";
     } catch (error) {
-        console.error(error); // Log the error for debugging purposes
+        console.error(error); 
         return "Error entering data";
     }
 };
@@ -67,5 +67,14 @@ module.exports.updateWatchlistMovies = async (userName, updatedMovies) => {
     } catch (err) {
         console.error(err);
         throw new Error('Database update error');
+    }
+};
+module.exports.getUserDetails = async (userName) => {
+    try {
+        const user = await Profile.findOne({ userName }, 'userName email');  
+        return user;
+    } catch (err) {
+        console.error("Error fetching user details", err);
+        throw new Error("Database query error");
     }
 };

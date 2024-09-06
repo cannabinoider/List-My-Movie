@@ -1,4 +1,4 @@
-const { addUser, checkUserName,addMovieToWatchlist, getMoviesFromWatchlist, deleteMovieFromWatchlist } = require('../services/serviceMovie');
+const { addUser, checkUserName,addMovieToWatchlist, getMoviesFromWatchlist, deleteMovieFromWatchlist, fetchUserDetails} = require('../services/serviceMovie');
 const bcrypt = require('bcrypt');
 
 module.exports.getHome = (req, res) => {
@@ -104,5 +104,22 @@ module.exports.deleteMovies = async (req, res) => {
         }
     } catch (err) {
         res.status(500).send({ message: "Internal Server Error" });
+    }
+};
+module.exports.getUserDetails = async (req, res) => {
+    const userName = req.headers.username; 
+    try {
+        const userDetails = await fetchUserDetails(userName);
+
+        if (userDetails) {
+            res.status(200).json({
+                userName: userDetails.userName,
+                email: userDetails.email
+            });
+        } else {
+            res.status(404).json({ message: "User not found" });
+        }
+    } catch (err) {
+        res.status(500).json({ message: "Internal Server Error" });
     }
 };

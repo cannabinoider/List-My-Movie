@@ -8,6 +8,6 @@ route.get("/login",control.login)
 route.post("/addToWatchlist",control.addToWatchlist)
 route.get("/getMoviesFromWatchlist",control.getMovies)
 route.post("/deleteMovieFromWatchlist",control.deleteMovies)
-
+route.get("/getUserdetails",control.getUserDetails)
 
 module.exports = route;

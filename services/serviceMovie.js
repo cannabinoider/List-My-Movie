@@ -1,4 +1,4 @@
-const { getUserName, addUserName,getEmail,getWatchlist,addMovieIdToWatchList,updateWatchlistMovies} = require('../models/modelController')
+const { getUserName, addUserName,getEmail,getWatchlist,addMovieIdToWatchList,updateWatchlistMovies,getUserDetails} = require('../models/modelController')
 const jwt =require("jsonwebtoken")
 const dotenv=require('dotenv');
 const bcrypt = require('bcrypt');
@@ -145,5 +145,19 @@ module.exports.deleteMovieFromWatchlist = async (userName, movieId) => {
         throw new Error("Error accessing database");
     }
 };
+module.exports.fetchUserDetails= async (userName)=>{
+    try {
+        const userDetails = await getUserDetails(userName);
+        
+        if (userDetails) {
+            return userDetails;  
+        } else {
+            return null;  
+        }
+    } catch (err) {
+        console.error("Error in service while fetching user details", err);
+        throw new Error("Service error");
+    }
 
+};
 
