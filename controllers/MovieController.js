@@ -75,7 +75,7 @@ module.exports.addToWatchlist = async (req, res) => {
 };
 module.exports.getMovies = async (req, res) => {
     const userName = req.headers.username;
-    console.log(userName,movieId);
+    console.log(userName);
     try {
         const movies = await getMoviesFromWatchlist(userName);
         if (movies) {

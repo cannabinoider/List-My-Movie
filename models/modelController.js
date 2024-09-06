@@ -38,16 +38,16 @@ module.exports.getEmail=async (email)=>{
     }
 }
 
-module.exports.getWatchlist=async (userName)=>{
-    const movieWatchlist=await Profile.findOne({userName:userName});
-    if(movieWatchlist){
-        console.log(movieWatchlist);
-        return(movieWatchlist);
+module.exports.getWatchlist = async (userName) => {
+    const movieWatchlist = await Profile.find({ userName: userName });
+    if (movieWatchlist && movieWatchlist.length > 0) {
+        console.log(movieWatchlist[0]);  
+        return movieWatchlist;  
+    } else {
+        return null;  
     }
-    else{
-        return("go ahead");
-    }
-}
+};
+
 module.exports.addMovieIdToWatchList=async (userName,movieId,movies)=>{
     const movieWatchlist = await Profile.updateOne({userName:userName},{ $set: { movies: [...movies, { id: movieId }] } });
     if(movieWatchlist.modifiedCount===1){

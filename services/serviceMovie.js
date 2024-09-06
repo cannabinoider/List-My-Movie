@@ -104,20 +104,20 @@ module.exports.addMovieToWatchlist = async (userName, movieId) => {
     }
 };
 module.exports.getMoviesFromWatchlist = async (userName) => {
-    try{
+    try {
         const userList = await getWatchlist(userName);
-        if(userList && userList.length>0){
-            const movieIds = userList.movies.map(movie => movie.id);
+        if (userList && userList.length > 0 && userList[0].movies && userList[0].movies.length > 0) {
+            const movieIds = userList[0].movies.map(movie => movie.id); 
             return movieIds;
-        }else{
-            return null;
+        } else {
+            return null;  
         }
-    }
-    catch(err){
+    } catch (err) {
         console.error(err);
-        return("error accessing db")
+        return "error accessing db";
     }
 };
+
 module.exports.deleteMovieFromWatchlist = async (userName, movieId) => {
     try {
         const existingMovies = await getWatchlist(userName);
